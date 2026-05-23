@@ -1,0 +1,13 @@
+{
+  "registry-mirrors": [
+    "https://dockerproxy.cn",
+    "https://docker.1ms.run",
+    "https://docker.xuanyuan.me"
+  ],
+  "insecure-registries": [],
+  "debug": false,
+  "experimental": false,
+  "features": {
+    "buildkit": true
+  }
+}

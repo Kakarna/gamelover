@@ -1,0 +1,7 @@
+server:
+  port: 8081
+
+knife4j:
+  openapi:
+    title: 用户服务API
+    description: 用户服务API文档

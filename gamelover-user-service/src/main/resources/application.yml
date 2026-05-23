@@ -1,0 +1,8 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: gamelover-user-service
+  profiles:
+    active: dev

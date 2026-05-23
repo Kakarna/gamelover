@@ -1,0 +1,7 @@
+server:
+  port: 8083
+
+knife4j:
+  openapi:
+    title: 数据同步服务API
+    description: 数据同步服务API文档

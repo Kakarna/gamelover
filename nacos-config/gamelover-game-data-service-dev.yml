@@ -1,0 +1,7 @@
+server:
+  port: 8082
+
+knife4j:
+  openapi:
+    title: 游戏数据服务API
+    description: 游戏数据服务API文档

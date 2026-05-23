@@ -1,0 +1,54 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/gamelover?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+    username: gamelover
+    password: gamelover123
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+      database: 0
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: gamelover
+      username: gamelover
+      password: gamelover123
+      authentication-database: gamelover
+  kafka:
+    bootstrap-servers: 127.0.0.1:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: gamelover-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://127.0.0.1:9411
+    sender:
+      type: web
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+knife4j:
+  enable: true
+  openapi:
+    title: GameLover API
+    description: 游戏数据聚合平台API文档
+    version: 1.0.0

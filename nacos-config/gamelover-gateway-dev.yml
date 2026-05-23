@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: gamelover-user-service
+          uri: lb://gamelover-user-service
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=2
+
+        - id: gamelover-game-data-service
+          uri: lb://gamelover-game-data-service
+          predicates:
+            - Path=/api/game/**
+          filters:
+            - StripPrefix=2
+
+        - id: gamelover-sync-service
+          uri: lb://gamelover-sync-service
+          predicates:
+            - Path=/api/sync/**
+          filters:
+            - StripPrefix=2

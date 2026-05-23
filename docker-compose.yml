@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    container_name: gamelover-nacos
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=mysql
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_DB_NAME=nacos_config
+      - MYSQL_SERVICE_USER=gamelover
+      - MYSQL_SERVICE_PASSWORD=gamelover123
+      - MYSQL_SERVICE_DB_PARAM=characterEncoding=utf8&connectTimeout=3000&socketTimeout=5000&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai
+      - NACOS_AUTH_ENABLE=false
+    volumes:
+      - ./data/nacos/logs:/home/nacos/logs
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      - mysql
+    networks:
+      - gamelover-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: gamelover-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=gamelover
+      - MYSQL_USER=gamelover
+      - MYSQL_PASSWORD=gamelover123
+      - MYSQL_ROOT_HOST=%
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+      - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+    networks:
+      - gamelover-network
+
+  redis:
+    image: redis:7.2
+    container_name: gamelover-redis
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    networks:
+      - gamelover-network
+
+  mongodb:
+    image: mongo:latest
+    container_name: gamelover-mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_DATABASE=gamelover
+    volumes:
+      - ./data/mongodb:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - gamelover-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.15
+    container_name: gamelover-kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    networks:
+      - gamelover-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.15
+    container_name: gamelover-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    volumes:
+      - ./data/zookeeper:/var/lib/zookeeper/data
+    networks:
+      - gamelover-network
+
+  zipkin:
+    image: openzipkin/zipkin:3.5
+    container_name: gamelover-zipkin
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+      - MYSQL_TCP_PORT=3306
+      - MYSQL_DB=zipkin
+      - MYSQL_USER=gamelover
+      - MYSQL_PASS=gamelover123
+    ports:
+      - "9411:9411"
+    depends_on:
+      - mysql
+    networks:
+      - gamelover-network
+
+networks:
+  gamelover-network:
+    driver: bridge
