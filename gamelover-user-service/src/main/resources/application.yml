@@ -6,3 +6,36 @@ spring:
     name: gamelover-user-service
   profiles:
     active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gamelover?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: gamelover
+    password: gamelover123
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.gamelover.user.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+swagger:
+  enabled: true
+  title: GameLover 用户服务 API
+  description: 游戏数据聚合平台用户服务接口文档
+  version: 1.0.0
+  base-package: com.gamelover.user.controller
+
+logging:
+  level:
+    com.gamelover: DEBUG
