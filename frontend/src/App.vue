@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+import { NConfigProvider, NMessageProvider, NDialogProvider, NNotificationProvider, darkTheme } from 'naive-ui'
 </script>
 
 <template>
-  <HelloWorld />
+  <n-config-provider :theme="darkTheme">
+    <n-message-provider>
+      <n-dialog-provider>
+        <n-notification-provider>
+          <RouterView />
+        </n-notification-provider>
+      </n-dialog-provider>
+    </n-message-provider>
+  </n-config-provider>
 </template>
+

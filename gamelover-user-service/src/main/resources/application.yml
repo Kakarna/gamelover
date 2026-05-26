@@ -2,10 +2,20 @@ server:
   port: 8081
 
 spring:
+  config:
+    import: optional:nacos:127.0.0.1:8848
   application:
     name: gamelover-user-service
   profiles:
     active: dev
+  cloud:
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848
+        namespace: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/gamelover?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true

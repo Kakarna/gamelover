@@ -12,7 +12,6 @@ import com.gamelover.user.mapper.UserMapper;
 import com.gamelover.user.service.UserService;
 import com.gamelover.user.vo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -66,6 +65,8 @@ public class UserServiceImpl implements UserService {
         user.setRegisterType("LOCAL");
         user.setStatus(1);
         user.setEmailVerified(0);
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
 
         userMapper.insert(user);
 
@@ -146,6 +147,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.hasText(userUpdateDTO.getPhone())) {
             user.setPhone(userUpdateDTO.getPhone());
         }
+        user.setUpdateTime(LocalDateTime.now());
 
         userMapper.updateById(user);
         return convertToUserInfoVO(user);
@@ -163,6 +165,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+        user.setUpdateTime(LocalDateTime.now());
         userMapper.updateById(user);
     }
 
@@ -191,6 +194,8 @@ public class UserServiceImpl implements UserService {
         account.setAuthCookie(bindDTO.getAuthCookie());
         account.setIsMain(isMain);
         account.setSyncStatus(1);
+        account.setCreateTime(LocalDateTime.now());
+        account.setUpdateTime(LocalDateTime.now());
 
         userGameAccountMapper.insert(account);
 
