@@ -59,7 +59,7 @@ services:
     container_name: gamelover-mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_ROOT_PASSWORD=gamelover123
       - MONGO_INITDB_DATABASE=gamelover
     volumes:
       - ./data/mongodb:/data/db
